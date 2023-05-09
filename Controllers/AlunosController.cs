@@ -85,5 +85,20 @@ namespace AlunosApi.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Create(Aluno aluno)
+        {
+            try
+            {
+                await _alunoService.CreateAluno(aluno);
+                return StatusCode(StatusCodes.Status201Created, "Aluno created");
+            }
+            catch 
+            {
+
+                return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
+            }
+        }
+
     }
 }
