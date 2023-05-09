@@ -86,19 +86,68 @@ namespace AlunosApi.Controllers
         }
 
         [HttpPost]
+        [Route("CreateAluno")]
         public async Task<ActionResult> Create(Aluno aluno)
         {
             try
             {
                 await _alunoService.CreateAluno(aluno);
-                return StatusCode(StatusCodes.Status201Created, "Aluno created");
+                return StatusCode(StatusCodes.Status201Created, "Aluno has been created successfully");
             }
-            catch 
+            catch
             {
 
                 return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
             }
         }
 
+        [HttpPut]
+        [Route("UpdateAluno/{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] Aluno aluno)
+        {
+            try
+            {
+                if (aluno.Id == id)
+                {
+                    await _alunoService.UpdateAluno(aluno);
+                    return StatusCode(StatusCodes.Status200OK, "Aluno has been Updated successfully");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
+                }
+
+
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteAluno")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                var aluno = await _alunoService.GetAluno(id);
+                if (aluno != null)
+                {
+                    await _alunoService.DeleteAluno(aluno);
+                    return StatusCode(StatusCodes.Status200OK, "Aluno has been deleted successfully");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
+                }
+
+            }
+            catch 
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "invalid request");
+            }
+         
+        }
     }
 }
